@@ -1,0 +1,75 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package roulette.client;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import roulette.communication.Client;
+import roulette.communication.CommunicationCommands;
+
+/**
+ *
+ * @author POOP
+ */
+public class RoulettePlayer 
+{
+    private Client client;
+    private int playerID = 0;
+    
+    public RoulettePlayer(InetAddress address) throws SocketException, IOException
+    {
+        client = new Client(address);
+        
+        client.send(CommunicationCommands.JOIN_MESSAGE);
+
+        // Nakon upucivanja zahteva za pristupanje igri, trebalo bi
+        // proveriti da li server vraca poruku kojom potvrdjuje prijem.
+        // U tom slucaju bi trebalo sacuvati i ID broj koji server dostavlja
+        // (u atributu playerID)
+        
+        // Primer u kom klijent (igrac) prima 10 poruka od servera.
+        // Prava implementacija to svakako ne bi radila u konstruktoru,
+        // a prijem poruka od servera bi vrsila u posebnoj niti.
+        for(int i = 0; i < 10; i++)
+        {
+            System.out.println(client.receive());
+        }
+        
+        // Klijent prekida sa radom.
+        client.send(CommunicationCommands.QUIT_MESSAGE + " " + playerID);
+    }
+    
+    public static void main(String []args)
+    {
+        try 
+        {
+            // Primer uspostavljanja veze sa serverom koji se nalazi na istom
+            // racunaru (localhost). Pretpostavka je da je server vec pokrenut
+            // u trenutku kada se stvara novi objekat RoulettePlayer
+
+			// Treba obezbediti zadavanje adrese raèunara od strane igraèa prilikom
+			// ili nakon pokretanja programa
+
+            RoulettePlayer newPlayer = new RoulettePlayer(InetAddress.getByName("localhost"));
+        }
+        catch (SocketException ex) 
+        {
+            Logger.getLogger(RoulettePlayer.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (UnknownHostException ex) 
+        {
+            Logger.getLogger(RoulettePlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) 
+        {
+            Logger.getLogger(RoulettePlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
