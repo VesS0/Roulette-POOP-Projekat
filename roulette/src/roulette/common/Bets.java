@@ -15,20 +15,14 @@ import java.util.logging.Logger;
  */
 public class Bets 
 {
-    private static ArrayList<Bet> bets = new ArrayList<Bet>();
+    private static ArrayList<Bet> m_bets = new ArrayList<Bet>();
     
 	private Bets() { }
-	
-    static {
-        bets.add( new Manque() );
-        bets.add( new Passe() );
-        bets.add( new Rouge() );
-    }
     
     public static Bet decodeBet(String str)
     {
         String []parts = str.split("_");
-        for(Bet b : bets)
+        for(Bet b : m_bets)
         {
             if(b.getClass().getName().toUpperCase().equals(parts[0]))
             {
