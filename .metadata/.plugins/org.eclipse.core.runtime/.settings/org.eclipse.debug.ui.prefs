@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+org.eclispe.debug.ui.Debug_view.debug_toolbar_hidden_perspectives=org.eclipse.ptp.debug.ui.PTPDebugPerspective
+preferredTargets=org.eclipse.ptp.debug.parallel.breakpoint\:org.eclipse.ptp.debug.parallel.breakpoint|default,org.eclipse.ptp.debug.parallel.breakpoint\:default|
