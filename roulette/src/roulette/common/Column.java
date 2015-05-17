@@ -6,8 +6,11 @@ public class Column extends Bet {
 
 	private final int m_column;
 	
-	public Column(int column, int amount) {
+	public Column(int column, int amount) throws ParameterOutOfBoundsException {
 		super(amount);
+		
+		if (column < 1 && column > 3)
+			throw new ParameterOutOfBoundsException("row can be between 1 and 12");
 		
 		m_column = column;
 	}

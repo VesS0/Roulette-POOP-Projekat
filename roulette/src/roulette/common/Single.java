@@ -6,8 +6,12 @@ public class Single extends Bet {
 
 	private int m_number;
 	
-	public Single(int number, int amount) {
+	public Single(int number, int amount) throws ParameterOutOfBoundsException {
 		super(amount);
+		
+		if (number < 0 && number > 36)
+			throw new ParameterOutOfBoundsException("number can be between 0 and 36");
+		
 		m_number = number;
 	}
 

@@ -6,8 +6,12 @@ public class Row extends Bet {
 
 	private final int m_row;
 	
-	public Row(int row, int amount) {
+	public Row(int row, int amount) throws ParameterOutOfBoundsException {
 		super(amount);
+		
+		if (row < 1 && row > 12) 
+			throw new ParameterOutOfBoundsException("row can be between 1 and 12");
+		
 		m_row = row;
 	}
 
