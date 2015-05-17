@@ -5,10 +5,20 @@
  */
 package roulette.common;
 
+import roulette.communication.CommunicationCommands;
+
 /**
  *
  * @author POOP
  */
 public class Manque extends Bet
 {
+	public Manque(int amount) {
+		super(amount);
+	}
+
+	@Override
+	public String getMesage() {
+		return CommunicationCommands.MANQUE + " " + Integer.toString(super.getAmount());
+	}
 }
