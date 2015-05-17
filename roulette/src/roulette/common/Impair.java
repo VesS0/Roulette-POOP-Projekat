@@ -9,7 +9,7 @@ public class Impair extends Bet {
 	}
 
 	@Override
-	public String getMesage() {
+	public String getMessage() {
 		return CommunicationCommands.IMPAIR + " " + Integer.toString(getAmount());
 	}
 

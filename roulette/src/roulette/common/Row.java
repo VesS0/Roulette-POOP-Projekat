@@ -12,7 +12,7 @@ public class Row extends Bet {
 	}
 
 	@Override
-	public String getMesage() {
+	public String getMessage() {
 		return CommunicationCommands.ROW + Integer.toString(m_row) 
 				+ " " + Integer.toString(getAmount());
 	}

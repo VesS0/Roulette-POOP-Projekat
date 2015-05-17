@@ -13,8 +13,9 @@ public class Column extends Bet {
 	}
 
 	@Override
-	public String getMesage() {
-		return CommunicationCommands.COLUMN + Integer.toString(m_column) + " " + Integer.toString(getAmount());
+	public String getMessage() {
+		return CommunicationCommands.COLUMN + Integer.toString(m_column) 
+				+ " " + Integer.toString(getAmount());
 	}
 
 }

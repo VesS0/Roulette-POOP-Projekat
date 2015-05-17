@@ -9,7 +9,7 @@ public class Noir extends Bet {
 	}
 
 	@Override
-	public String getMesage() {
+	public String getMessage() {
 		return CommunicationCommands.NOIR + " " + Integer.toString(getAmount());
 	}
 

@@ -18,7 +18,7 @@ public class Passe extends Bet
 	}
 
 	@Override
-	public String getMesage() {
+	public String getMessage() {
 		return CommunicationCommands.PASSE + " " + Integer.toString(getAmount());
 	}
 }

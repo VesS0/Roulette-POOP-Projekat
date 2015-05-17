@@ -17,5 +17,9 @@ public abstract class Bet
 		return m_amount;
 	}
 	
-	public abstract String getMesage();
+	public abstract String getMessage();
+	
+	public final String toString() {
+		return getMessage();
+	}
 }

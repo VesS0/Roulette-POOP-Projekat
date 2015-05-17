@@ -18,7 +18,7 @@ public class Rouge extends Bet
 	}
 
 	@Override
-	public String getMesage() {
+	public String getMessage() {
 		return CommunicationCommands.ROUGE + " " + Integer.toString(getAmount());
 	}
 }

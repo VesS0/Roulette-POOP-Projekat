@@ -9,7 +9,7 @@ public class Pair extends Bet {
 	}
 
 	@Override
-	public String getMesage() {
+	public String getMessage() {
 		return CommunicationCommands.PAIR + " " + Integer.toString(getAmount());
 	}
 

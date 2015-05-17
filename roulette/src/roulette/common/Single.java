@@ -12,7 +12,7 @@ public class Single extends Bet {
 	}
 
 	@Override
-	public String getMesage() {
+	public String getMessage() {
 		return CommunicationCommands.SINGLE + Integer.toString(m_number) 
 				+ " " + Integer.toString(getAmount());
 	}
