@@ -19,6 +19,6 @@ public class Manque extends Bet
 
 	@Override
 	public String getMesage() {
-		return CommunicationCommands.MANQUE + " " + Integer.toString(super.getAmount());
+		return CommunicationCommands.MANQUE + " " + Integer.toString(getAmount());
 	}
 }
