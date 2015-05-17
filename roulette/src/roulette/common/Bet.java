@@ -12,10 +12,10 @@ public abstract class Bet
 	public Bet(int amount) {
 		m_amount = amount;
 	}
-	
-	public abstract String getMesage();
 
 	public int getAmount() {
 		return m_amount;
 	}
+	
+	public abstract String getMesage();
 }
