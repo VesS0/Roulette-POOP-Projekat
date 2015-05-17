@@ -16,7 +16,7 @@ import roulette.server.Game;
  */
 public class Server extends SocketCommunicator implements Runnable
 {
-    private Hashtable<Integer, PlayerProxy> connectedPlayers = new Hashtable<Integer, PlayerProxy>();
+    private Hashtable<Integer, PlayerProxy> connectedPlayers = new Hashtable<>();
     private Thread serverThread = new Thread(this);
     private int clientID;
     private Game game;

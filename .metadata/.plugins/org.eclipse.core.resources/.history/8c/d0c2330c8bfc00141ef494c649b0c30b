@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class Bets 
 {
-    private static ArrayList<Bet> bets = new ArrayList<Bet>();
+    private static ArrayList<Bet> bets = new ArrayList<>();
     
 	private Bets() { }
 	

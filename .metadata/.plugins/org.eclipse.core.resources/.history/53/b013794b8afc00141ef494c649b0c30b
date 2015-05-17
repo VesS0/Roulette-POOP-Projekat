@@ -33,7 +33,7 @@ public class Game
         // Dodati igraèa u kolekciju igraèa koju pamti Game
         return playerStartMoney;
     }
-    	
+    
     // Metoda koja sluzi za "broadcast" - slanje poruke svim igracima
     public void sendMessageToAllPlayers(String message)
     {
