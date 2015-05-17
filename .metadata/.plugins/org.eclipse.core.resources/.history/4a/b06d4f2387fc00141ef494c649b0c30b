@@ -1,0 +1,10 @@
+
+package roulette;
+
+/**
+ *
+ * @author POOP
+ */
+public abstract class Bet 
+{
+}
