@@ -23,6 +23,7 @@ public abstract class SocketCommunicator
     protected byte []receiveBuffer = new byte[RCV_BUFFER_LEN];
     protected DatagramPacket receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
     
+    
     public SocketCommunicator(int port) throws SocketException
     {
         datagramSocket = new DatagramSocket(port);

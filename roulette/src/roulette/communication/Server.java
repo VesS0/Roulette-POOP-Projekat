@@ -8,6 +8,7 @@ package roulette.communication;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.Hashtable;
+
 import roulette.server.Game;
 
 /**
@@ -21,11 +22,11 @@ public class Server extends SocketCommunicator implements Runnable
     private int clientID;
     private Game game;
         
-    public Server(Game _game) throws SocketException
+    public Server(Game _game,int port) throws SocketException
     {
-        super(SERVER_PORT);
+        super(port);
         game = _game;
-        serverThread.start();
+        //serverThread.start();
     }
     
     public void run()
@@ -35,10 +36,11 @@ public class Server extends SocketCommunicator implements Runnable
         {
             try
             {
-                String message = receive();
-				// Debug:
-                // System.out.println("Server received: " + message);
-                processMessage(message);
+
+                	String message = receive();
+					// Debug:
+                	System.out.println("Server received: " + message);
+                	processMessage(message);
             }
             catch(IOException e) {  }
         }
@@ -47,7 +49,6 @@ public class Server extends SocketCommunicator implements Runnable
     
     private void processMessage(String message) throws IOException
     {
-        
         // Bilo bi dobro najpre proveriti da li je poznata komanda.
         // Ako nije - poslati izvoru nepoznate komande poruku da je nastala greska 
         
@@ -60,14 +61,28 @@ public class Server extends SocketCommunicator implements Runnable
         
         // if( playerCommands.containCommandStartingWith(message) )
         // { ... izdvoj ID igraca, obradi ostatak komande ... }
-        
-        if( message.equals(CommunicationCommands.JOIN_MESSAGE) )
+        if (message.startsWith(CommunicationCommands.BET_MESSAGE) || message.startsWith(CommunicationCommands.STATE_REQUEST) || message.startsWith(CommunicationCommands.BALANCE))
+        {
+        	String []parts=message.split(" ");
+        	Integer id=Integer.parseInt(parts[1]);
+        	PlayerProxy pp=connectedPlayers.get(id);
+        	if (pp!=null)
+        	{
+        		pp.receivedMessage(message);
+        	}
+        }
+        else
+        if( message.startsWith((CommunicationCommands.JOIN_MESSAGE)))
         {
             PlayerProxy pp = new PlayerProxy(this, receivePacket.getAddress(), receivePacket.getPort());
             clientID++;
-            connectedPlayers.put(clientID, pp);
+            
+            synchronized(this){connectedPlayers.put(clientID, pp);} ////
+            
             double playerStartMoney = game.newPlayer(pp);
+            
             pp.send(CommunicationCommands.WELCOME_MESSAGE + " " + clientID + " " + playerStartMoney );
+         
         }
         else
         if( message.startsWith(CommunicationCommands.QUIT_MESSAGE) )
@@ -75,13 +90,21 @@ public class Server extends SocketCommunicator implements Runnable
             // poruka se razdvaja na delove, a kao separator se koristi razmak
             String []parts = message.split(" ");
             // Trebalo bi proveriti da li se poruka sastoji od vise delova
+            
             Integer id = Integer.parseInt(parts[1]);
             PlayerProxy pp = connectedPlayers.get(id);
             if( pp != null )
             {
                 // Ovde treba javiti igracu, putem PlayerProxy objekta,
                 // da treba da napusti igru
+            	pp.send(CommunicationCommands.QUIT_RESPONSE);
             }
+        }
+        else 
+        {
+        	String []parts=message.split(" ");
+        	PlayerProxy pp=connectedPlayers.get(Integer.parseInt(parts[1]));
+        	pp.send(CommunicationCommands.ERROR+" "+message);
         }
     }
 }

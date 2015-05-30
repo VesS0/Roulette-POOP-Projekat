@@ -19,6 +19,7 @@ public class CommunicationCommands
     public static final String QUIT_MESSAGE = "QUIT";
     public static final String QUIT_RESPONSE = "BYE";
     public static final String STATE_REQUEST = "STATE";
+    public static final String BALANCE="BALANCE";
     
     // other messages 
     public static final String MANQUE = "MANQUE";
@@ -30,4 +31,15 @@ public class CommunicationCommands
     public static final String SINGLE = "SINGLE_";
     public static final String COLUMN = "COLUMN_";
     public static final String ROW = "ROW_";
+    
+    // server messages
+    public static final String PLACE_BETS="PYB";
+    public static final String NO_BETS="RNVP";
+    public static final String BET_MESSAGE="BET";
+    public static final String REJECT_RESPONCE="REJECT";
+    public static final String NO_MONEY_RESPONCE="FUND";
+    public static final String POSITIVE_RESPONCE="ACCEPT";
+    public static final String WINNER="WINNUMBER";
+    public static final String WIN="WIN";
+    public static final String ERROR="ERROR MESSAGE";
 }
