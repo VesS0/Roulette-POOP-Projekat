@@ -24,15 +24,13 @@ public final class Table implements Runnable
 	protected volatile boolean allow_bets=true;
 	private double w;
 	protected void setCroupier(Croupier c){myCroupier=c;}
-	protected synchronized void waitToSpin()
+	protected synchronized void waitToSpin() throws InterruptedException
 	{
-		try{
 		while(!spinMe)
 			synchronized(this)
 			{
 				wait();
 			}
-		}catch(InterruptedException ie){}
 	}
 	//private synchronized void spinIT()
 	//{
@@ -43,9 +41,10 @@ public final class Table implements Runnable
     public void run()
     {
     	spinMe=true;
+    	try{
     	while(!Thread.interrupted())
     	{
-    	try{
+    	
     		while (!spin) synchronized(this){ wait();}
     		spin=false;
     		
@@ -59,6 +58,7 @@ public final class Table implements Runnable
     			_new=_old*0.99;
     			rotation+=_old*time;
     			_old=_new;
+    			rollTheWheel(_old);
     			if(_old<0.2*w && wasNotIn) { allow_bets=false; myCroupier.tellThem(allow_bets);wasNotIn=false;}
     		}
     		double degree=(int) (rotation-Math.floor(rotation)+(Math.floor(rotation)%360));
@@ -69,10 +69,13 @@ public final class Table implements Runnable
     		myCroupier.tellThem(allow_bets);
     		synchronized(this){notify();}
     		}
-    		catch(InterruptedException ie){}
-    	}
+    		
+    	}catch(InterruptedException ie){}
     }  
-    
+    private void rollTheWheel(double degree)
+    {
+    	//roulette.gui.imageWheel.roll(degree);
+    }
     public synchronized String state(){
     	if (allow_bets) return CommunicationCommands.PLACE_BETS;
     	else return CommunicationCommands.NO_BETS;

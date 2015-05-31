@@ -24,13 +24,20 @@ public class Player implements Runnable
 	private double amount_available;
 	private Game myGame;
 	protected int id;
-    
-    public Player(PlayerProxy _playerProxy, double _startMoney, Game _game)
+	private String name;
+	private double current_bets;
+	protected void resetBets(){current_bets=0;}
+    public double balance()
+    {
+    	return amount_available;
+    }
+    public Player(PlayerProxy _playerProxy, double _startMoney, Game _game,String namee)
     {
     	playerProxy = _playerProxy;
    		amount_available=_startMoney;
    		myGame=_game;
         playerThread.start();
+        name=namee;
     }
     protected void set(int idd)
     {
@@ -55,7 +62,6 @@ public class Player implements Runnable
     		String[] command= msg.split(" ");
     		if (command.length==2 && command[0].equals(CommunicationCommands.QUIT_MESSAGE) && Integer.parseInt(command[1])==id)
     		{
-    			System.out.println("PRIMIO QUIT U PLAYER");///
     			System.out.println("Player"+id+" quits");
     			quitGame();
     		}
@@ -70,6 +76,7 @@ public class Player implements Runnable
     				else{
     					Bet bet= Bets.decodeBet(command[2]+"_"+(int)Double.parseDouble(command[3])); //razdvojen KOD i AMOUNT donjom crticom.
     					reportMessage(myGame.player_bet(this,bet));
+    					current_bets+=Double.parseDouble(command[3]);
     					System.out.println(id+" "+amount_available);
     					amount_available-=Double.parseDouble(command[3]);
     					System.out.println(id+" "+amount_available);
@@ -92,9 +99,16 @@ public class Player implements Runnable
     }
 
     public String toString(){
-    	return " "+id+" "+amount_available;
+    	return " "+id+" "+amount_available+"\n";
     }
-    
+    public int id()
+    {
+    	return id;
+    }
+    public String toStringFull()
+    {
+    	return name+"  "+amount_available+"  "+current_bets+"  "+"Hello "+ id+"\n";
+    }
     public void quitGame()
     {
     	synchronized(this){myGame.quit(id);}//////
@@ -114,9 +128,10 @@ public class Player implements Runnable
         try 
         {
         	String s[]=message.split(" ");
-        	if (s.length==2 && s[0]==CommunicationCommands.WIN)
+        	if (s.length==2 && s[0].equals(CommunicationCommands.WIN))
         	{
-        		amount_available+=Integer.parseInt(s[1]);
+        		amount_available+=Double.parseDouble(s[1]);
+        		
         	}
             playerProxy.send(message);
         } 

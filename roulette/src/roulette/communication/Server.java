@@ -74,12 +74,15 @@ public class Server extends SocketCommunicator implements Runnable
         else
         if( message.startsWith((CommunicationCommands.JOIN_MESSAGE)))
         {
+        	String []parts=message.split(" ");
+        	String name="Vlaa"+(clientID+1);//parts[1];
+        	
             PlayerProxy pp = new PlayerProxy(this, receivePacket.getAddress(), receivePacket.getPort());
             clientID++;
             synchronized(this){connectedPlayers.put(clientID, pp);} ////
             
-            double playerStartMoney = game.newPlayer(pp);
-            if (playerStartMoney==0) pp.send(CommunicationCommands.BUSY_RESPONCE);
+            double playerStartMoney = game.newPlayer(pp,name);
+            if (playerStartMoney==0) {pp.send(CommunicationCommands.BUSY_RESPONCE);	connectedPlayers.remove(clientID);}
             else pp.send(CommunicationCommands.WELCOME_MESSAGE + " " + clientID + " " + playerStartMoney );
          
         }
@@ -97,6 +100,7 @@ public class Server extends SocketCommunicator implements Runnable
                 // Ovde treba javiti igracu, putem PlayerProxy objekta,
                 // da treba da napusti igru
             	pp.send(CommunicationCommands.QUIT_RESPONSE);
+            	pp.receivedMessage(message);
             }
         }
         else 
