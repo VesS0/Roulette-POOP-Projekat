@@ -21,4 +21,9 @@ public class Passe extends Bet
 	public String getMessage() {
 		return CommunicationCommands.PASSE + " " + Integer.toString(getAmount());
 	}
+
+	@Override
+	public int win(int number) {
+		return number <= 36 && number > 18 ? getAmount()*2 : 0;
+	}
 }

@@ -48,7 +48,6 @@ public class PlayerProxy
     {
         while( receivedMessage == null )
             wait();
-        
         String retMessage = receivedMessage;
         receivedMessage = null;
         return retMessage;

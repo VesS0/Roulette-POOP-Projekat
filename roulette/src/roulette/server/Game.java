@@ -16,6 +16,7 @@ import roulette.communication.CommunicationCommands;
 import roulette.communication.PlayerProxy;
 import roulette.communication.Server;
 
+import java.io.IOException;
 import java.lang.Object;
 import java.util.Hashtable;
 /**
@@ -25,8 +26,10 @@ import java.util.Hashtable;
 public class Game 
 {
 	private Hashtable<Integer,Player> players=new Hashtable<Integer,Player>();
+	private int numOfPlayers;
+	private int maxNum;
     private double playerStartMoney = 200;
-    private int id=0;
+    private int id=1;
     private Croupier croupier;
     private Table table;
 	// Pošto je samo jedna igra predviðena, mogao bi da se koristi
@@ -37,13 +40,13 @@ public class Game
     // Metoda kojom se prikljucuje nov igrac u igru
 	// Metoda vraæa iznos koji je dodeljen igraèu
     protected boolean getState(){return croupier.check_state();}
-    protected String player_bet(Player p, Bet b){ return croupier.player_bet(p, b);}
+    protected synchronized String player_bet(Player p, Bet b){ return croupier.player_bet(p, b);}
     protected Table getTable(){return table;}
-    public Game()
+    public Game(int num)
     {
     	table=new Table();
     	croupier=new Croupier(this);
-    	
+    	maxNum=num;
     }
     protected void start()
     {
@@ -54,12 +57,15 @@ public class Game
     }
     public double newPlayer(PlayerProxy pp) //s
     {
-        Player p = new Player(pp, playerStartMoney, this);
-        
-     // Dodati igraèa u kolekciju igraèa koju pamti Game
-        players.put(id,p);
-  		p.set(id++);
-  		//pp.receivedMessage(CommunicationCommands.WELCOME_MESSAGE+" "+(id-1)+" "+playerStartMoney);)
+    	if (maxNum==numOfPlayers) playerStartMoney=0;
+    	else
+    	{
+    		Player p = new Player(pp, playerStartMoney, this);
+    		numOfPlayers++;
+    		//Dodati igraèa u kolekciju igraèa koju pamti Game
+    		players.put(id,p);
+    		p.set(id++);
+    	}
         return playerStartMoney;
     }
     
@@ -74,15 +80,16 @@ public class Game
     }
     public synchronized void quit(int players_id)//
     {
-    	players.remove(players_id);
+    	players.remove(players_id);numOfPlayers--;
     }
     public static void main(String []args)
     {
         try 
         {
-        	System.out.println("Please enter a port");
+        	System.out.println("Please enter a port and max number of players");
         	int port=(new Scanner(System.in)).nextInt();
-            Game game=new Game();
+        	int num=(new Scanner(System.in)).nextInt();
+            Game game=new Game(num);
             Server server=new Server(game,port);
             Thread serverThread=new Thread(server);
             serverThread.start();

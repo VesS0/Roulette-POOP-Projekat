@@ -21,4 +21,9 @@ public class Single extends Bet {
 				+ " " + Integer.toString(getAmount());
 	}
 
+	@Override
+	public int win(int number) {
+		return number == m_number ? getAmount()*36 : 0;
+	}
+
 }

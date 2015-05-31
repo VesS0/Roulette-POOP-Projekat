@@ -18,8 +18,13 @@ public abstract class Bet
 	}
 	
 	public abstract String getMessage();
+	public abstract int win(int number);
 	
 	public final String toString() {
 		return getMessage();
+	}
+	
+	public final boolean equals(Object obj) {
+		return this.toString().equals(obj.toString());
 	}
 }

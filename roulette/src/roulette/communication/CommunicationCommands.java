@@ -37,6 +37,7 @@ public class CommunicationCommands
     public static final String NO_BETS="RNVP";
     public static final String BET_MESSAGE="BET";
     public static final String REJECT_RESPONCE="REJECT";
+    public static final String BUSY_RESPONCE="BUSY";
     public static final String NO_MONEY_RESPONCE="FUND";
     public static final String POSITIVE_RESPONCE="ACCEPT";
     public static final String WINNER="WINNUMBER";

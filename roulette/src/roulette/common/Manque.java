@@ -21,4 +21,9 @@ public class Manque extends Bet
 	public String getMessage() {
 		return CommunicationCommands.MANQUE + " " + Integer.toString(getAmount());
 	}
+
+	@Override
+	public int win(int number) {
+		return number <= 18 && number > 0 ? getAmount()*2 : 0;
+	}
 }

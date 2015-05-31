@@ -76,12 +76,11 @@ public class Server extends SocketCommunicator implements Runnable
         {
             PlayerProxy pp = new PlayerProxy(this, receivePacket.getAddress(), receivePacket.getPort());
             clientID++;
-            
             synchronized(this){connectedPlayers.put(clientID, pp);} ////
             
             double playerStartMoney = game.newPlayer(pp);
-            
-            pp.send(CommunicationCommands.WELCOME_MESSAGE + " " + clientID + " " + playerStartMoney );
+            if (playerStartMoney==0) pp.send(CommunicationCommands.BUSY_RESPONCE);
+            else pp.send(CommunicationCommands.WELCOME_MESSAGE + " " + clientID + " " + playerStartMoney );
          
         }
         else

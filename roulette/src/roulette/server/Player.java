@@ -36,13 +36,13 @@ public class Player implements Runnable
     {
     	id=idd;
     }
-    public void state(){
+    public String state(){
     	String string;
     	if (myGame.getState())
     	string=CommunicationCommands.PLACE_BETS;
     	else
     	string=CommunicationCommands.NO_BETS;
-    	reportMessage(string);
+    	return string;
     }
     
     public void run()
@@ -50,27 +50,37 @@ public class Player implements Runnable
     	while(true)
     	{
     		try{
+  
     		String msg=playerProxy.receive();
     		String[] command= msg.split(" ");
-    		if (command.length==2 && command[0]==CommunicationCommands.QUIT_MESSAGE && Integer.parseInt(command[1])==id)
+    		if (command.length==2 && command[0].equals(CommunicationCommands.QUIT_MESSAGE) && Integer.parseInt(command[1])==id)
     		{
+    			System.out.println("PRIMIO QUIT U PLAYER");///
     			System.out.println("Player"+id+" quits");
     			quitGame();
     		}
     		else
-    			if(command.length==4 && command[0]==CommunicationCommands.BET_MESSAGE)
+    			if(command.length==4 && command[0].equals(CommunicationCommands.BET_MESSAGE))
     			{
-    				if (Integer.parseInt(command[3])>amount_available) reportMessage(CommunicationCommands.NO_MONEY_RESPONCE);
-    				Bet bet= Bets.decodeBet(command[2]+"_"+command[3]); //razdvojen KOD i AMOUNT donjom crticom.
-    				reportMessage(myGame.player_bet(this,bet));
-    				amount_available-=Integer.parseInt(command[3]);
+    				if (Double.parseDouble(command[3])>amount_available) {reportMessage(CommunicationCommands.NO_MONEY_RESPONCE);
+    				System.out.println("NEDOVOLJNO PARA");///
+    				}
+    				else
+    				if (state()=="RNVP") {reportMessage(CommunicationCommands.NO_BETS); System.out.println("Zabrana");}
+    				else{
+    					Bet bet= Bets.decodeBet(command[2]+"_"+(int)Double.parseDouble(command[3])); //razdvojen KOD i AMOUNT donjom crticom.
+    					reportMessage(myGame.player_bet(this,bet));
+    					System.out.println(id+" "+amount_available);
+    					amount_available-=Double.parseDouble(command[3]);
+    					System.out.println(id+" "+amount_available);
+    				}
     			}
     			else 
-    				if (command.length==2 && command[0]==CommunicationCommands.STATE_REQUEST) state();
+    				if (command.length==2 && command[0].equals(CommunicationCommands.STATE_REQUEST)) {reportMessage(state());System.out.println("U SATATEYY AA");}
     					else
-    						if (command.length==2 && command[0]==CommunicationCommands.BALANCE) 
-    							reportMessage(amount_available+" ");
-    						else reportMessage(CommunicationCommands.ERROR);
+    						if (command.length==2 && command[0].equals(CommunicationCommands.BALANCE))
+    							reportMessage(amount_available+" "); 
+    						else {reportMessage(CommunicationCommands.ERROR);System.out.println("GRESKA");}
     		
         // napraviti ciklus u kojem nit ceka da PlayerProxy dostavi poruku
         // pozivom metode PlayerProxy.receive()
@@ -81,6 +91,9 @@ public class Player implements Runnable
     	}
     }
 
+    public String toString(){
+    	return " "+id+" "+amount_available;
+    }
     
     public void quitGame()
     {

@@ -5,6 +5,16 @@ import roulette.communication.CommunicationCommands;
 public class Column extends Bet {
 
 	private final int m_column;
+
+	public static int getColumn(int number) {
+		for(int i = 1; i <= 3; i++) {
+			if((number - i) % 3 == 0) {
+				return i;
+			}
+		}
+		
+		return 0;
+	}
 	
 	public Column(int column, int amount) throws ParameterOutOfBoundsException {
 		super(amount);
@@ -19,6 +29,11 @@ public class Column extends Bet {
 	public String getMessage() {
 		return CommunicationCommands.COLUMN + Integer.toString(m_column) 
 				+ " " + Integer.toString(getAmount());
+	}
+
+	@Override
+	public int win(int number) {
+		return getColumn(number) == m_column ? getAmount()*12 : 0;
 	}
 
 }

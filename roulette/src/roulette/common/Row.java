@@ -6,6 +6,10 @@ public class Row extends Bet {
 
 	private final int m_row;
 	
+	public static int getRow(int number) {
+		return (int)Math.ceil(number / 3.0);
+	}
+	
 	public Row(int row, int amount) throws ParameterOutOfBoundsException {
 		super(amount);
 		
@@ -19,6 +23,11 @@ public class Row extends Bet {
 	public String getMessage() {
 		return CommunicationCommands.ROW + Integer.toString(m_row) 
 				+ " " + Integer.toString(getAmount());
+	}
+
+	@Override
+	public int win(int number) {
+		return getRow(number) == m_row ? getAmount()*3 : 0;
 	}
 
 }
